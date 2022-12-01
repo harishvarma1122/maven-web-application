@@ -10,7 +10,7 @@ pipeline{
  stages{
         stage('checkout code'){
         steps{
-            git branch: '${BranchName}', credentialsId: 'b0093679-6fc3-4399-87a0-121d50e0a9fc', url: 'https://github.com/harishvarma1122/maven-web-application.git'
+            git branch: '${params.BranchName}', credentialsId: 'b0093679-6fc3-4399-87a0-121d50e0a9fc', url: 'https://github.com/harishvarma1122/maven-web-application.git'
         }
         }
         
