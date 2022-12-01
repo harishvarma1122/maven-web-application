@@ -15,7 +15,7 @@ stage('Upload Artifacts into Nexus Repo'){
 }
 stage('deploy into tomcat'){
     sshagent(['jenkins-ssh']) {
- sh "scp -o StrictHostKeyChecking=no target/maven-web-application.war ec2-user@35.78.211.115/:/opt/apache-tomcat-9.0.68/webapps/"
+ sh "scp -o StrictHostKeyChecking=no target/maven-web-application.war ec2-user@35.78.211.115:/opt/apache-tomcat-9.0.68/webapps/"
 }
 }
 }
