@@ -1,0 +1,43 @@
+pipeline{
+    agent any
+    tools{
+        maven "maven3.8.4"
+    }
+    parameters {
+  choice choices: ['development', 'master', 'uat', 'test'], description: 'manual branch selection', name: 'BranchName'
+}
+
+ stages{
+        stage('checkout code'){
+        steps{
+            git branch: '${BranchName}', credentialsId: 'b0093679-6fc3-4399-87a0-121d50e0a9fc', url: 'https://github.com/harishvarma1122/maven-web-application.git'
+        }
+        }
+        
+        stage('Build'){
+            steps{
+                sh "mvn clean package"
+            }
+        }
+        
+        stage('sonarqube report'){
+            steps{
+                sh "mvn clean sonar:sonar"
+             }
+        }
+             stage('nexus'){
+                 steps{
+                     sh "mvn clean deploy"
+                 }
+             }
+             
+            
+             stage('tomcat'){
+                 steps{
+                      sshagent(['jenkins-ssh']) {
+ sh "scp -o StrictHostKeyChecking=no target/maven-web-application.war ec2-user@35.78.211.115:/opt/apache-tomcat-9.0.68/webapps/"
+                 }
+             }
+    }
+}
+}
